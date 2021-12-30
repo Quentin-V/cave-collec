@@ -9,6 +9,10 @@ const MangaSchema = new Schema({
         type: String,
         required: true
     },
+    editionId: {
+        type: String,
+        reqiured: true
+    },
     user: {
         type: String,
         required: true

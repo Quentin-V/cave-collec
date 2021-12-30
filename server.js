@@ -11,6 +11,7 @@ var https = require('https');
 
 const mangaRoutes = require('./routes/api/manga.js')
 const readRoutes = require('./routes/api/read.js')
+const editionRoutes = require('./routes/api/edition.js')
 
 const certificate = fs.readFileSync('./sslcert/cert.pem')
 const privateKey = fs.readFileSync('./sslcert/privkey.pem')
@@ -27,6 +28,7 @@ mongoose.connect(mongoUri, {
 
 app.use('/api/manga', mangaRoutes)
 app.use('/api/read', readRoutes)
+app.use('/api/edition', editionRoutes)
 
 app.get('/', (req, res) => res.send('hello world'))
 

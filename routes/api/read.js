@@ -3,30 +3,32 @@ const Manga = require('../../models/manga.js')
 
 const router = Router()
 
-router.put('/', async (req, res) => {
+router.put('/:mangaid/:user', async (req, res) => {
     try {
-        const { mangaIds, user } = req.body
-        const mangas = await Manga.find({mangaId: {$in: mangaIds}, user: user})
-        if(!mangas) {
-            formatted = mangaIds.map(mid => new Object({mangaId: mid, read: false}))
-            return res.status(200).json(formatted)
-        }
-        res.status(200).json(mangas)
+        const { read } = req.body
+        const { mangaid, user } = req.params
+        const manga = await Manga.findOneAndUpdate({mangaId: mangaid, user: user}, {$set: {read: read}})
+        res.status(200).json(manga)
     }catch(error) {
         res.status(500).json({message: error.message})
     }
 })
 
-router.get('/:mangaid', async (req, res) => {
+router.get('/:editionid/:mangaid/:user', async (req, res) => {
     try{
-        const { mangaid } = req.params
-        const { user } = req.body
+        const { editionid, mangaid, user } = req.params
         const manga = await Manga.findOne({mangaId: mangaid, user: user})
         // If not found then not read
-        if(!manga) return res.status(200).json({
-            mangaId: mangaid,
-            read: false,
-        })
+        if(!manga) {
+            const newManga = new Manga({
+                editionId: editionid,
+                mangaId: mangaid,
+                user: user,
+                read: false
+            })
+            await newManga.save()
+            return res.status(200).json(newManga)
+        }
         res.status(200).json(manga)
     }catch(error) {
         res.status(500).json({message: error.message})
