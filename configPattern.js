@@ -1,3 +1,4 @@
+const jwtKey = 'key'
 const mongoUser = 'username'
 const mongoPassword = 'password'
 module.exports = {
