@@ -8,7 +8,7 @@ const router = Router()
 router.get('/exists/:username', async (req, res) => {
 	try {
 		const { username } = req.params
-		const existingUser = await User.findOne({username: username()})
+		const existingUser = await User.findOne({username: username})
 		if(existingUser) return res.status(200).json({exists: true})
 		return res.status(200).json({exists: false})
 	}catch(err) {
@@ -33,6 +33,20 @@ router.post('/register', async (req, res) => {
 			id: user._id
 		}, jwtKey)
 		res.status(201).json({message: 'User created', token: token})
+	}catch(err) {
+		return res.status(500).json({message: err.message})
+	}
+})
+
+router.post('/login', async (req, res) => {
+	try {
+		const { username, password } = req.body
+		const user = User.findOne({username: username})
+		if(!user) return res.status(404).json({message: 'User not found'})
+		const storedHash = user.password
+		const goodPassword = bcrypt.compare(password, storedHash)
+		if(!goodPassword) return res.status(401).json({message: 'Wrong password'})
+		// TODO : Generate and give token
 	}catch(err) {
 		return res.status(500).json({message: err.message})
 	}
