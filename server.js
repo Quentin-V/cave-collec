@@ -6,8 +6,8 @@ const { HTTP_PORT, HTTPS_PORT, mongoUri } = require('./config.js')
 const cors = require('cors')
 const morgan = require('morgan')
 
-var http = require('http');
-var https = require('https');
+const http = require('http');
+const https = require('https');
 
 const mangaRoutes = require('./routes/api/manga.js')
 const readRoutes = require('./routes/api/read.js')
@@ -24,7 +24,7 @@ app.use(express.json())
 mongoose.connect(mongoUri, {
     useNewUrlParser: true,
     useUnifiedTopology: true
-}).then(() => console.log('MongoDB database connected...')).catch(err => console.log(err))
+}, () => console.log('MongoDB database connected...'))
 
 app.use('/api/manga', mangaRoutes)
 app.use('/api/read', readRoutes)
@@ -32,8 +32,8 @@ app.use('/api/edition', editionRoutes)
 
 app.get('/', (req, res) => res.send('hello world'))
 
-var httpServer = http.createServer(app);
-var httpsServer = https.createServer(credentials, app);
+const httpServer = http.createServer(app);
+const httpsServer = https.createServer(credentials, app);
 httpServer.listen(HTTP_PORT, () => console.log(`App listening at http://localhost:${HTTP_PORT}`));
 httpsServer.listen(HTTPS_PORT, () => console.log(`App listening at https://localhost:${HTTPS_PORT}`));
 //app.listen(PORT, () => console.log(`App listening at http://localhost:${PORT}`))
