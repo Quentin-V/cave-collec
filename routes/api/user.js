@@ -30,7 +30,7 @@ router.post('/register', async (req, res) => {
 		await user.save()
 		const token = jwt.sign({
 			username: username,
-			id: user._id,
+			userid: user._id,
 			date: new Date()
 		}, jwtKey)
 		res.status(201).json({message: 'User created', token: token, username: username})
@@ -42,14 +42,14 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
 	try {
 		const { username, password } = req.body
-		const user = User.findOne({username: username})
+		const user = await User.findOne({username: username})
 		if(!user) return res.status(404).json({message: 'User not found'})
 		const storedHash = user.password
-		const goodPassword = bcrypt.compare(password, storedHash)
+		const goodPassword = await bcrypt.compare(password, storedHash)
 		if(!goodPassword) return res.status(401).json({message: 'Wrong password'})
 		const token = jwt.sign({
 			username: username,
-			id: user._id,
+			userid: user._id,
 			date: new Date()
 		}, jwtKey)
 		return res.status(200).json({message: 'Successfully connected', username: username, token: token})
