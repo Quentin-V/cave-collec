@@ -3,7 +3,7 @@ const Manga = require('../../models/manga')
 
 const router = Router()
 
-const verifyAuth = require('auth')
+const verifyAuth = require('./auth.js')
 
 router.put('/:mangaid/:user', async (req, res) => {
     await verifyAuth(req).catch(rejection => {

@@ -3,7 +3,7 @@ const Manga = require('../../models/manga.js')
 
 const router = Router()
 
-const verifyAuth = require('auth')
+const verifyAuth = require('./auth.js')
 
 router.get('/:editionid', async(req, res) => {
 	await verifyAuth(req).catch(rejection => {
