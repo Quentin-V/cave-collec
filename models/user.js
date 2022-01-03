@@ -9,6 +9,11 @@ const UserSchema = new Schema({
 	password: {
 		type: String,
 		required: true
+	},
+	invalidTokenDate: {
+		type: Date,
+		default: '2000-01-01',
+		required: true
 	}
 })
 

@@ -1,9 +1,14 @@
 const { Router } = require('express')
-const Manga = require('../../models/manga.js')
+const Manga = require('../../models/manga')
 
 const router = Router()
 
+const verifyAuth = require('auth')
+
 router.put('/:mangaid/:user', async (req, res) => {
+    await verifyAuth(req).catch(rejection => {
+        return res.status(401).json({message: rejection})
+    })
     try {
         const { read } = req.body
         const { mangaid, user } = req.params
@@ -15,6 +20,9 @@ router.put('/:mangaid/:user', async (req, res) => {
 })
 
 router.get('/:editionid/:mangaid/:user', async (req, res) => {
+    await verifyAuth(req).catch(rejection => {
+        return res.status(401).json({message: rejection})
+    })
     try{
         const { editionid, mangaid, user } = req.params
         const manga = await Manga.findOne({mangaId: mangaid, user: user})

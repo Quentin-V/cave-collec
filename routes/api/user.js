@@ -30,9 +30,10 @@ router.post('/register', async (req, res) => {
 		await user.save()
 		const token = jwt.sign({
 			username: username,
-			id: user._id
+			id: user._id,
+			date: new Date()
 		}, jwtKey)
-		res.status(201).json({message: 'User created', token: token})
+		res.status(201).json({message: 'User created', token: token, username: username})
 	}catch(err) {
 		return res.status(500).json({message: err.message})
 	}
@@ -46,7 +47,12 @@ router.post('/login', async (req, res) => {
 		const storedHash = user.password
 		const goodPassword = bcrypt.compare(password, storedHash)
 		if(!goodPassword) return res.status(401).json({message: 'Wrong password'})
-		// TODO : Generate and give token
+		const token = jwt.sign({
+			username: username,
+			id: user._id,
+			date: new Date()
+		}, jwtKey)
+		return res.status(200).json({message: 'Successfully connected', username: username, token: token})
 	}catch(err) {
 		return res.status(500).json({message: err.message})
 	}
