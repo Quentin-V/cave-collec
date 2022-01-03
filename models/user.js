@@ -17,5 +17,5 @@ const UserSchema = new Schema({
 	}
 })
 
-const Manga = model('manga', UserSchema)
-module.exports = Manga
+const User = model('user', UserSchema)
+module.exports = User
