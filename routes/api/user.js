@@ -69,4 +69,15 @@ router.delete('/:username', async (req, res) => {
 	}
 })
 
+router.get('/:username', async (req, res) => {
+	try {
+		const { username } = req.params
+		const user = await User.findOne({username: username});
+		if(!user) return res.status(404).json({message: 'No user with this username'})
+		res.status(200).json(user)
+	}catch(err) {
+		return res.status(500).json({message: err.message})
+	}
+})
+
 module.exports = router
