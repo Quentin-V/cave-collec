@@ -5,12 +5,12 @@ const router = Router()
 
 const verifyAuth = require('./auth.js')
 
-router.put('/:mangaid/:user', async (req, res) => {
-    await verifyAuth(req).then(async () => {
+router.put('/:mangaid', async (req, res) => {
+    verifyAuth(req).then(async (username) => {
         try {
             const { read } = req.body
-            const { mangaid, user } = req.params
-            const manga = await Manga.findOneAndUpdate({mangaId: mangaid, user: user}, {$set: {read: read}})
+            const { mangaid } = req.params
+            const manga = await Manga.findOneAndUpdate({mangaId: mangaid, user: username}, {$set: {read: read}})
             res.status(200).json(manga)
         }catch(error) {
             res.status(500).json({message: error.message})
@@ -20,17 +20,17 @@ router.put('/:mangaid/:user', async (req, res) => {
     })
 })
 
-router.get('/:editionid/:mangaid/:user', async (req, res) => {
+router.get('/:editionid/:mangaid', async (req, res) => {
     verifyAuth(req).then(async () => {
         try{
-            const { editionid, mangaid, user } = req.params
-            const manga = await Manga.findOne({mangaId: mangaid, user: user})
+            const { editionid, mangaid } = req.params
+            const manga = await Manga.findOne({mangaId: mangaid, user: username})
             // If not found then not read
             if(!manga) {
                 const newManga = new Manga({
                     editionId: editionid,
                     mangaId: mangaid,
-                    user: user,
+                    user: username,
                     read: false
                 })
                 await newManga.save()

@@ -9,7 +9,6 @@ const morgan = require('morgan')
 const http = require('http');
 const https = require('https');
 
-const mangaRoutes   = require('./routes/api/manga.js')
 const readRoutes    = require('./routes/api/read.js')
 const editionRoutes = require('./routes/api/edition.js')
 const userRoutes    = require('./routes/api/user.js')
@@ -27,7 +26,6 @@ mongoose.connect(mongoUri, {
     useUnifiedTopology: true
 }, () => console.log('MongoDB database connected...'))
 
-app.use('/api/manga', mangaRoutes)
 app.use('/api/read', readRoutes)
 app.use('/api/edition', editionRoutes)
 app.use('/api/user', userRoutes)

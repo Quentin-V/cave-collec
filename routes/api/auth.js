@@ -16,7 +16,7 @@ function verifyAuth(req) {
             let user = await User.findById(decoded.userid)
             if(!user) reject('user not found')
             if(user.invalidTokenDate > decoded.date) reject('Token expired')
-            resolve(true)
+            resolve(user.username)
         })
     })
 }
