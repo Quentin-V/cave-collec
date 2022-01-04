@@ -21,7 +21,7 @@ router.put('/:mangaid', async (req, res) => {
 })
 
 router.get('/:editionid/:mangaid', async (req, res) => {
-    verifyAuth(req).then(async () => {
+    verifyAuth(req).then(async (username) => {
         try{
             const { editionid, mangaid } = req.params
             const manga = await Manga.findOne({mangaId: mangaid, user: username})
